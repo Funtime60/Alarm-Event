@@ -1,9 +1,9 @@
 {
-  "name": "Factorio-Mod-Template",
+  "name": "Set-Timeout",
   "version": "0.0.1",
-  "title": "Factorio Mod Template",
+  "title": "SetTimeout Library",
   "author": "Funtime60",
   "factorio_version": "2.0",
   "dependencies": ["base >= 2.0"],
-  "description": "A template repository of a factorio mod repository. Don't forget to change the name and API key for the mod portal."
+  "description": "A factorio mod library that adds JS-like SetTimeout functionality to allow for a callback on a specified later tick."
 }
