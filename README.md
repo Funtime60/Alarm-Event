@@ -1,2 +1,2 @@
-# Factorio-Mod-Template
-A template repository of a factorio mod repository. It should be as simple as duplicating the repo and setting your API key in the GH secrets tab. Then make a release and it's done. This is all untested though so...
+# Set-Timeout
+A factorio mod library that adds JS-like SetTimeout functionality to allow for a callback on a specified later tick. 
