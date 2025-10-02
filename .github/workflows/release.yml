@@ -1,0 +1,35 @@
+name: Publish Factorio Mod
+
+on:
+    release:
+        types: [released]
+    
+jobs:
+    publish-mod:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+            
+            - name: Update version file with release tag
+              run: | 
+                  cat info.json
+                  echo ">>>>>>"
+                  sed -i.bak -e 's/"version": ".*"/"version": "${{ github.event.release.tag_name }}"/g' -e 's/"version": "v/"version": "/g' info.json
+                  cat info.json
+
+            - name: Validate Mod
+              uses: TheBrutalX/factorio-mod-uploader-action@v2
+              with:
+                  action: validate
+
+            - name: Create zip
+              uses: TheBrutalX/factorio-mod-uploader-action@v2
+              with:
+                  action: compress
+
+            - name: Upload Mod
+              uses: TheBrutalX/factorio-mod-uploader-action@v2
+              with:
+                  action: upload
+                  factorio-api-key: ${{ secrets.FACTORIO_API_KEY }}
