@@ -1,2 +1,2 @@
-# Set-Timeout
-A factorio mod library that adds JS-like SetTimeout functionality to allow for a callback on a specified later tick. 
+# Alarm Event Library [Alarm-Event]
+A factorio mod library that adds alarm events that will be raised on a mod developer specified tick. Handling the conditional event handlers is up to the mod developer using this library.
