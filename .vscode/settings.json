@@ -5,6 +5,11 @@
 		"game",
 		"script",
 		"defines",
-		"serpent"
+		"serpent",
+		"storage",
+		"remote",
+		"commands",
+		"table_size",
+		"log"
 	]
 }

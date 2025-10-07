@@ -1,9 +1,9 @@
 {
-  "name": "Set-Timeout",
+  "name": "Alarm-Event",
   "version": "0.0.1",
-  "title": "SetTimeout Library",
+  "title": "Alarm Event Library",
   "author": "Funtime60",
   "factorio_version": "2.0",
   "dependencies": ["base >= 2.0"],
-  "description": "A factorio mod library that adds JS-like SetTimeout functionality to allow for a callback on a specified later tick."
+  "description": "A factorio mod library that adds alarm events that will be raised on a mod developer specified tick. Handling the conditional event handlers is up to the mod developer using this library."
 }
