@@ -70,24 +70,25 @@ local function __loader()
 end
 
 local function __setAlarm(timeInput, identifier)
+	-- local og_timeInput = timeInput
 	if timeInput and type(timeInput) == "table" then
 		if not timeInput.delay and not timeInput.millis and not timeInput.seconds and not timeInput.tick then return nil end
 		while not timeInput.tick do
-			if timeInput.delay and type(timeInput.delay) == "number" then
+			if timeInput.delay and math.type(timeInput.delay) == "integer" then
 				timeInput.tick = math.max(timeInput.delay, 1) + (game and game.tick or 0)
 			elseif timeInput.delay then return nil end
-			if timeInput.millis and type(timeInput.millis) == "number" then
+			if timeInput.millis and math.type(timeInput.millis) == "integer" then
 				timeInput.delay = math.floor((timeInput.millis * 3 / 50) + 0.5)
 			elseif timeInput.millis then return nil end
-			if timeInput.seconds and type(timeInput.seconds) == "number" then
+			if timeInput.seconds and math.type(timeInput.seconds) == "integer" then
 				timeInput.millis = timeInput.seconds * 1000
 			elseif timeInput.seconds then return nil end
 		end
-		if type(timeInput.tick) ~= "number" then return nil end
+		if math.type(timeInput.tick) ~= "integer" then return nil end
 		timeInput = timeInput.tick
 	end
 	if identifier and type(identifier) ~= "string" then return nil end
-	if not timeInput or type(timeInput) ~= "number" then error("setAlarm called with invalid delay {"..serpent.line(timeInput).."}") end
+	if not timeInput or math.type(timeInput) ~= "integer" then return nil end --error("setAlarm called with invalid delay {"..serpent.line(og_timeInput).."}") end
 	return __returnObject(__register(timeInput, identifier))
 end
 
