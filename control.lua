@@ -16,8 +16,8 @@ local function __isStorageSafe(data, assumeRegisteredMT)
 end
 
 local function __init()
-	storage.__wakeTickArray = {}
-	storage.__eventIDsArray = {}
+	storage.__wakeTickArray = storage.__wakeTickArray or {}
+	storage.__eventIDsArray = storage.__eventIDsArray or {}
 end
 
 local function __returnObject(eventObject)
