@@ -39,7 +39,7 @@ local function __remove(eventID, identifier)
 	return eventObject
 end
 
-local function callbacker(NthTickEventData)
+local function __callbacker(NthTickEventData)
 	local eventData = storage.__wakeTickArray[NthTickEventData.tick]
 	if eventData and eventData.eventID then
 		local data = {name = eventData.eventID, tick = NthTickEventData.tick, mod_name = modName}
@@ -48,23 +48,24 @@ local function callbacker(NthTickEventData)
 	end
 end
 
-local function __register(wakeTick, identifier)
-	if not wakeTick or type(wakeTick) ~= "number" or wakeTick <= game.tick or identifier and type(identifier) ~= "string" then return nil end
+local function __register(wakeTick, interface)
+	if not wakeTick or type(wakeTick) ~= "number" or wakeTick <= game.tick then return nil end
+	if interface and type(interface) ~= "string" then return nil end
 	local eventObject = storage.__wakeTickArray[wakeTick] or {wakeTick = wakeTick, eventID = script.generate_event_name(), registerees = {}}
-	if identifier and eventObject.registerees then
-		eventObject.registerees[identifier] = true
+	if interface and eventObject.registerees then
+		eventObject.registerees[interface] = true
 	else
 		eventObject.registerees = nil
 	end
 	storage.__wakeTickArray[wakeTick]            = eventObject
 	storage.__eventIDsArray[eventObject.eventID] = eventObject
-	script.on_nth_tick(wakeTick, callbacker)
+	script.on_nth_tick(wakeTick, __callbacker)
 	return eventObject
 end
 
 local function __loader()
 	for tick, _ in pairs(storage.__wakeTickArray) do
-		script.on_nth_tick(tick, callbacker)
+		script.on_nth_tick(tick, __callbacker)
 	end
 end
 
@@ -111,7 +112,6 @@ local selfInterfaceFunc = {
 	setAlarm      = __setAlarm,
 	delAlarm      = __delAlarm,
 	getAlarm      = __getAlarm,
-	isStorageSafe = __isStorageSafe,
 }
 
 if script.mod_name == modName and not remote.interfaces[selfInterfaceName] then
@@ -119,11 +119,6 @@ if script.mod_name == modName and not remote.interfaces[selfInterfaceName] then
 	script.on_load(__loader)
 
 	remote.add_interface(selfInterfaceName, selfInterfaceFunc)
-	commands.add_command("dump", nil, function (commandData)
-		local player = game.players[commandData.player_index]
-		local print  = player.print
-		print(serpent.block(storage))
-	end)
 elseif script.mod_name == modName and remote.interfaces[selfInterfaceName] then
 	error("Some other mod created an interface with the same name. Please send the mod developer a copy of your mod list so they can find the conflict.")
 elseif script.mod_name ~= modName and remote.interfaces[selfInterfaceName] then
@@ -132,17 +127,6 @@ elseif script.mod_name ~= modName and remote.interfaces[selfInterfaceName] then
 		interfaceFunc = {},
 		reverseFnName = {},
 		isStorageSafe = __isStorageSafe,
-		unsafeHandler = function(eventID, func)
-			local ogEvent = eventID
-			if type(eventID) == "table" and eventID.eventID then eventID = eventID.eventID end
-			if type(eventID) ~= "number" then error("Invalid eventID: {"..serpent.line(eventID).."}") end
-			local function handler(...)
-				script.on_event(eventID, nil)
-				func(...)
-			end
-			script.on_event(eventID, handler)
-			return {handler = handler, eventID = ogEvent, func = func}
-		end,
 	}
 	for name, _ in pairs(selfInterfaceFunc) do
 		local shortName = string.match(name, "^([%u%l][%u%l][%u%l])Alarm$")
