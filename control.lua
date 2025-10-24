@@ -109,9 +109,9 @@ end
 
 local selfInterfaceName = modName
 local selfInterfaceFunc = {
-	setAlarm      = __setAlarm,
-	delAlarm      = __delAlarm,
-	getAlarm      = __getAlarm,
+	setAlarm = __setAlarm,
+	delAlarm = __delAlarm,
+	getAlarm = __getAlarm,
 }
 
 if script.mod_name == modName and not remote.interfaces[selfInterfaceName] then
